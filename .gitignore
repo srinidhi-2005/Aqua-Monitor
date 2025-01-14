@@ -1,0 +1,6 @@
+.DS_Store
+
+# Add entries for files that should be ignored
+.venv/
+*.dll
+*.lib
