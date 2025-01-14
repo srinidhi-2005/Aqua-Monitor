@@ -15,7 +15,7 @@ A deep learning-based system that uses CNN to analyze satellite imagery for esti
 - **Frontend:** React.js with Tailwind CSS
 - **Backend:** Node.js, Express.js, Flask
 - **Database:** MongoDB
-- **ML Framework:** CNN (Convolutional Neural Network)
+- **ML Framework:** CNN (Convolution Neural Network)
 - **Deployment:** AWS/Heroku
 
 ## System Requirements
@@ -39,47 +39,48 @@ A deep learning-based system that uses CNN to analyze satellite imagery for esti
 1. Clone the repository
 
 ```
-   git clone https://github.com/Abhinay2206/lake-water-quality
+git clone https://github.com/Abhinay2206/lake-water-quality
 ```
 
 2. Install backend dependencies
 
 ```
-   cd backend
-   npm install
+cd backend
+npm install
 ```
 
 3. Install frontend dependencies
 
 ```
-   cd frontend
-   npm install
+cd frontend
+npm install
 ```
 
 4. Set up python environment
 
 ```
-    # Create .env file in backend directory
-    cd cnn-pytorch
-    python -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
+# Create .env file in backend directory
+cd cnn-pytorch
+python -m venv venv
+venv\Scripts\activate #on Windows
+source venv/bin/activate #on Linux/MacOS
+pip install -r requirements.txt
 ```
 
 5. Start the servers
 
 ```
-    # Start backend server
-    cd backend
-    npm start
+# Start backend server
+cd backend
+npm start
 
-    # Start Flask server
-    cd cnn-pytorch
-    python app.py
+# Start Flask server
+cd cnn-pytorch
+python app.py
 
-    # Start frontend development server
-    cd frontend
-    npm start
+# Start frontend development server
+cd frontend
+npm start
 ```
 
 ## Project Structure
