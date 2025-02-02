@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDarkMode } from '../components/DarkModeContext';
+import { TbArrowBackUpDouble } from "react-icons/tb";
 import axios from 'axios';
 
 const Signup = () => {
@@ -9,6 +10,10 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const { darkMode } = useDarkMode();
+
+  const handleBackToLogin = () => {
+    navigate("/login");
+  };
 
   const handleCreateUser  = async(e) => {
     e.preventDefault();
@@ -30,6 +35,14 @@ const Signup = () => {
 
   return (
     <div className={`flex items-center justify-center min-h-screen ${darkMode ? "bg-gradient-to-b from-gray-900 to-gray-800 text-gray-200" : "bg-gradient-to-br from-blue-50 to-blue-200 text-gray-800"}`}>
+      <div className="absolute top-7 left-16 z-10">
+          <button
+            onClick={handleBackToLogin} 
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+          >
+            <TbArrowBackUpDouble className="text-xl" />
+          </button>
+        </div>
       <div className="text-center">
         <h1 className="text-3xl font-bold mb-8 text-blue-600">Create an Account</h1>
         <div className={`p-8 rounded-lg shadow-lg w-96 max-w-full ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>

@@ -48,7 +48,7 @@ const Login = () => {
               htmlFor="email"
               className={`block ${darkMode ? 'text-gray-300' : 'text-gray-700'} text-sm font-bold mb-2`}
             >
-              email
+              Email
             </label>
             <input
               id="username"
@@ -102,7 +102,7 @@ const Login = () => {
           </div>
           
           
-          <p className={`text-center ${darkMode ? 'text-gray-300' : 'text-gray-600'} text-sm`}>
+          <p className={`text-center ${darkMode ? 'text-gray-300' : 'text-gray-600'} text-l`}>
             New user?{" "}
             <a
               href="#"

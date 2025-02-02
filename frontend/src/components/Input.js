@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ lakeName, onLakeNameChange, onSubmit, darkMode }) => {
+const Input = ({ lakeName, onLakeNameChange, onSubmit, onKeyDown, darkMode }) => {
   return (
     <div className={`w-full max-w-[725px] p-2.5 rounded-lg shadow-lg flex flex-col items-center transition-colors duration-200 ${
       darkMode ? 'bg-gray-800' : 'bg-white/50'
@@ -13,6 +13,7 @@ const Input = ({ lakeName, onLakeNameChange, onSubmit, darkMode }) => {
           value={lakeName}
           required
           onChange={onLakeNameChange}
+          onKeyDown={onKeyDown}
           className={`w-full max-w-[600px] h-10 border rounded px-2.5 text-sm mt-7 mb-4 focus:outline-none transition-colors duration-200 ${
             darkMode 
               ? 'bg-gray-700 border-gray-600 text-gray-200 placeholder-gray-400' 

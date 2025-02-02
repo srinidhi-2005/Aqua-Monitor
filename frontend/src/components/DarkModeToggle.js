@@ -8,8 +8,8 @@ const DarkModeToggle = () => {
     return (
         <button
             onClick={toggleDarkMode}
-            className={`fixed top-4 right-4 p-2 rounded-full transition-colors duration-200 ${
-                darkMode ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-200 hover:bg-gray-300"
+            className={`fixed top-5 right-7 p-3 rounded-full transition-colors duration-200 ${
+                darkMode ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-200 hover:bg-gray-400"
             }`}
             aria-label="Toggle dark mode"
         >

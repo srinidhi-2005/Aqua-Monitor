@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GiDroplets } from "react-icons/gi";
 import { FiUser, FiLogOut, FiClock, FiHome} from "react-icons/fi"; 
 import FileUpload from "../components/FileUpload";
@@ -16,13 +16,22 @@ function PageLayout() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isResultsOpen, setIsResultsOpen] = useState(false);
   const [username, setUsername] = useState("");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [history, setHistory] = useState([]);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); 
+      handleSubmit(event);
+    }
+  };
 
   useEffect(() => {
       const token = localStorage.getItem('jwtToken');
@@ -36,6 +45,25 @@ function PageLayout() {
     }
     const storedHistory = JSON.parse(localStorage.getItem("history")) || [];
     setHistory(storedHistory);
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [location.state]);
 
   const handleFileChange = (event) => {
@@ -162,19 +190,19 @@ function PageLayout() {
   };
 
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+    setDropdownOpen((prev) => !prev);
   };
 
   const navigateTo = (path) => {
-    navigate(path, { state: { username, history } });
+    navigate(path, { state: { username } });
     setDropdownOpen(false);
   };
 
   const handleLogout = () => {
     setUsername("");
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('isLogin')
-    navigate('/login');
+    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("isLogin");
+    navigate("/login");
     setDropdownOpen(false);
   };
 
@@ -198,21 +226,26 @@ function PageLayout() {
 
         {username ? (
           <>
-            <button
-              className={`fixed top-4 right-20 text-lg flex items-center gap-2 
-                        ${darkMode ? "text-gray-200 hover:text-blue-400" : "text-gray-800 hover:text-blue-600"} 
-                        border ${darkMode ? "border-gray-600" : "border-gray-300"} 
-                        bg-transparent rounded-full px-6 py-2 transition duration-300 
-                        hover:bg-opacity-10 hover:border-blue-500 hover:shadow-lg`}
-              onClick={toggleDropdown}
-            >
-              <FiUser className="text-xl" />
-              {username.split('@')[0]} 
-            </button>
+          
+              <button
+                className={` fixed top-4 right-[100px] text-lg flex items-center gap-2 
+                          ${darkMode ? "text-gray-200 hover:text-blue-400" : "text-gray-800 hover:text-blue-600"} 
+                          border ${darkMode ? "border-gray-600" : "border-gray-300"} 
+                          bg-transparent rounded-full px-6 py-2 transition duration-300 
+                          hover:bg-opacity-10 hover:border-blue-500 hover:shadow-lg`}
+                onClick={toggleDropdown}
+              >
+                <FiUser className="text-xl" />
+                {username.split('@')[0]} 
+              </button>
+
             {dropdownOpen && (
-              <div className={`absolute right-5 mt-16 w-56 rounded-xl shadow-2xl z-10 backdrop-blur-md 
-                            ${darkMode ? "bg-gray-800/90 text-gray-200" : "bg-white/90 text-gray-800"} 
-                            border ${darkMode ? "border-gray-700" : "border-gray-200"}`}>
+              <div
+                ref={dropdownRef}
+                className={`absolute right-[100px] mt-16 w-56 rounded-xl shadow-2xl z-10 backdrop-blur-md 
+                          ${darkMode ? "bg-gray-800/90 text-gray-200" : "bg-white/90 text-gray-800"} 
+                          border ${darkMode ? "border-gray-700" : "border-gray-200"}`}
+              >
                 <div className="p-4 border-b border-gray-700">
                   <div className="flex items-center gap-3">
                     <FiUser className="text-xl text-blue-500" />
@@ -223,23 +256,23 @@ function PageLayout() {
                   </div>
                 </div>
                 <div className="p-2">
-                  <button 
-                    onClick={() => navigateTo('/profile')} 
+                  <button
+                    onClick={() => navigateTo("/profile")}
                     className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition duration-200
                               ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"}`}
                   >
                     <FiUser className="text-blue-500" />
                     <span>Profile</span>
                   </button>
-                  <button 
-                    onClick={() => navigateTo('/history')} 
+                  <button
+                    onClick={() => navigateTo("/history")}
                     className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition duration-200
                               ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"}`}
                   >
                     <FiClock className="text-blue-500" />
                     <span>History</span>
                   </button>
-                  <button 
+                  <button
                     onClick={handleLogout}
                     className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition duration-200
                               ${darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100"}`}
@@ -250,6 +283,7 @@ function PageLayout() {
                 </div>
               </div>
             )}
+
           </>
         ) : (
           <button
@@ -319,6 +353,7 @@ function PageLayout() {
             lakeName={lakeName}
             onLakeNameChange={(e) => setLakeName(e.target.value)}
             onSubmit={handleSubmit}
+            onKeyDown={handleKeyDown}
             darkMode={darkMode}
             setUsername={setUsername}
           />
